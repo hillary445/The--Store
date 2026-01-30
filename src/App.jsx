@@ -26,6 +26,11 @@ function App() {
 
   if (!isLoggedIn) return <LogInForm/>;
 
+  // Show AgeGate if not verified
+  if (!ageVerified) {
+    return <AgeGate onVerify={() => setAgeVerified(true)} />
+  }
+
   return (
     <>
     <Navbar/>
