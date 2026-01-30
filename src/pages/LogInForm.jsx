@@ -1,5 +1,5 @@
-import React, {useState} from "react"
-
+import React, {useState, useEffect, useContext} from "react"
+import { AuthContext } from "../context/AuthContext"
 
 function LogInForm() {
     //Stored the input values in a state
@@ -8,8 +8,8 @@ function LogInForm() {
     const [password, setPassword] = useState('')
 
     //Track if user is logged in
-    const [isLoggedIn, setLoggedIn] = useState(false)
-
+    const {login} = useContext(AuthContext);
+    
     //Handling user registration
     const handleReg = () => {
         const user = {
@@ -47,10 +47,9 @@ function LogInForm() {
         }
     };
 
-
   return (
     <form>
-        <h2>Welcome back</h2>
+        <h2>Login to The Store</h2>
         <div>
             <input 
             type="text"
@@ -79,8 +78,8 @@ function LogInForm() {
         </div>
         <br />
         <div>
-            <button onClick={handleReg}>Register</button>
-            <button onClick={handleLogIn}>Login</button>
+            <button type="button" onClick={handleLogIn}>Login</button>
+            <button type="button" onClick={handleReg}>Create Account</button>
         </div>
     </form>
   )
