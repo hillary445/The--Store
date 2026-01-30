@@ -8,10 +8,22 @@ import Cart from './pages/Cart'
 import LogInForm from './pages/LogInForm'
 import { AuthContext } from './context/AuthContext'
 import Footer from './components/Footer'
+import AgeGate from './components/AgeGate'
 
 
 function App() {
   const { isLoggedIn } = useContext(AuthContext);
+
+   // Age Verification state
+  const [ageVerified, setAgeVerified] = useState(() => {
+    return localStorage.getItem('ageVerified') === 'true'
+  })
+
+    // AgeGate: block app if not verified
+  if (!ageVerified) {
+    return <AgeGate onVerify={() => setAgeVerified(true)} />
+  }
+
   if (!isLoggedIn) return <LogInForm/>;
 
   return (
