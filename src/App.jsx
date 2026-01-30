@@ -1,13 +1,30 @@
-import { useState } from 'react'
-import AgeGate from './components/AgeGate'
+import { useContext, useState } from 'react'
+import Navbar from './components/Navbar'
+import { Route, Routes } from 'react-router-dom'
 import './App.css'
+import Home from './pages/Home'
+import Shop from './pages/Shop'
+import Cart from './pages/Cart'
+import LogInForm from './pages/LogInForm'
+import { AuthContext } from './context/AuthContext'
+import Footer from './components/Footer'
+import AgeGate from './components/AgeGate'
+
 
 function App() {
+  const { isLoggedIn } = useContext(AuthContext);
+
+   // Age Verification state
   const [ageVerified, setAgeVerified] = useState(() => {
     return localStorage.getItem('ageVerified') === 'true'
   })
 
-  const [count, setCount] = useState(0)
+    // AgeGate: block app if not verified
+  if (!ageVerified) {
+    return <AgeGate onVerify={() => setAgeVerified(true)} />
+  }
+
+  if (!isLoggedIn) return <LogInForm/>;
 
   // Show AgeGate if not verified
   if (!ageVerified) {
@@ -15,49 +32,17 @@ function App() {
   }
 
   return (
-    <div className="app-container">
-
-      {/* Hero Section */}
-      <header className="hero">
-        <h1> Liquor Lounge</h1>
-        <p>Premium spirits. Smooth experience.</p>
-      </header>
-
-      <div className="card">
-        <button className="count-btn" onClick={() => setCount(count + 1)}>
-          Drinks served: {count}
-        </button>
-
-        <p className="welcome-text">
-          Welcome to our premium spirits collection
-        </p>
-
-        {/* Age Verification Testing Panel */}
-        <div className="age-test-panel">
-          <p className="test-title">Age Verification Testing</p>
-
-          <button
-            className="reset-btn"
-            onClick={() => {
-              localStorage.removeItem('ageVerified')
-              window.location.reload()
-            }}
-          >
-            Reset & Show Age Gate
-          </button>
-
-          <p className="test-status">
-            Status:{' '}
-            <strong>
-              {localStorage.getItem('ageVerified') === 'true'
-                ? 'Verified'
-                : 'Not verified'}
-            </strong>
-          </p>
-        </div>
-      </div>
-    </div>
-  )
+    <>
+    <Navbar/>
+    <Routes>
+      <Route path='/' element= {<Home/>}/>
+      <Route path='/shop' element= {<Shop/>}/>
+      <Route path='/cart' element= {<Cart/>}/>
+      <Route path='/login' element= {<LogInForm/>}/>
+    </Routes>
+    <Footer/>
+    </>
+  );
 }
 
 export default App
