@@ -39,7 +39,6 @@ function LogInForm() {
 
         //Checking if the user exists in the storage
         if(
-            savedUser.name === name && 
             savedUser.email === email &&
             savedUser.password === password
         ) {
@@ -57,7 +56,7 @@ function LogInForm() {
 
   return (
     <form>
-        <h2>Login to The Store</h2>
+        <h2>Login to The Liqour Lounge</h2>
         <div>
             <input 
             type="text"
