@@ -1,34 +1,62 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import AgeGate from './components/AgeGate'
 import './App.css'
 
 function App() {
+  const [ageVerified, setAgeVerified] = useState(() => {
+    return localStorage.getItem('ageVerified') === 'true'
+  })
+
   const [count, setCount] = useState(0)
 
+  // Show AgeGate if not verified
+  if (!ageVerified) {
+    return <AgeGate onVerify={() => setAgeVerified(true)} />
+  }
+
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+    <div className="app-container">
+
+      {/* Hero Section */}
+      <header className="hero">
+        <h1> Liquor Lounge</h1>
+        <p>Premium spirits. Smooth experience.</p>
+      </header>
+
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button className="count-btn" onClick={() => setCount(count + 1)}>
+          Drinks served: {count}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+
+        <p className="welcome-text">
+          Welcome to our premium spirits collection
         </p>
+
+        {/* Age Verification Testing Panel */}
+        <div className="age-test-panel">
+          <p className="test-title">Age Verification Testing</p>
+
+          <button
+            className="reset-btn"
+            onClick={() => {
+              localStorage.removeItem('ageVerified')
+              window.location.reload()
+            }}
+          >
+            Reset & Show Age Gate
+          </button>
+
+          <p className="test-status">
+            Status:{' '}
+            <strong>
+              {localStorage.getItem('ageVerified') === 'true'
+                ? 'Verified'
+                : 'Not verified'}
+            </strong>
+          </p>
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 

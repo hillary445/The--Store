@@ -1,18 +1,23 @@
-# React + Vite
+# Age Verification Feature
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Person 4 Work Completed
 
-Currently, two official plugins are available:
+### What I Built:
+- AgeGate component that asks users if they're 21+
+- Saves answer in localStorage (remembers after refresh)
+- Shows "Access Denied" if under 21
+- Reset button for testing
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Files:
+- `src/components/AgeGate.jsx` - Age check component
+- `src/components/AgeGate.css` - Styling
+- `src/App.jsx` - Added AgeGate to main app
+- `src/App.css` - Updated styles
 
-## React Compiler
-
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### How to Test:
+1. Run `npm run dev`
+2. Age check appears first
+3. Click "I am 21 or older" → See main app
+4. Click "I am under 21" → See "Access Denied"
+5. Refresh page → Still remembers your choice
+6. Click "Reset & Show Age Gate" → Test again
