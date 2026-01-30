@@ -1,11 +1,15 @@
 import React, {useState, useEffect, useContext} from "react"
 import { AuthContext } from "../context/AuthContext"
+import { useNavigate } from "react-router-dom"
+ 
 
 function LogInForm() {
     //Stored the input values in a state
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    const navigate = useNavigate();
 
     //Track if user is logged in
     const {login} = useContext(AuthContext);
@@ -40,8 +44,12 @@ function LogInForm() {
             savedUser.password === password
         ) {
             //saving the login state
-            localStorage.setItem('isLoggedIn', 'true');
-            setLoggedIn(true);
+            login(savedUser);
+            alert('Login successful!')
+            //Directs to home after successful login
+            navigate('/');
+
+
         }else{
             alert('Invalid email or password')
         }
