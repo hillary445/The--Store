@@ -2,19 +2,15 @@ import React, {useState, useEffect, useContext} from "react"
 import { AuthContext } from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
  
-
 function LogInForm() {
-    //Stored the input values in a state
+
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
     const navigate = useNavigate();
-
-    //Track if user is logged in
     const {login} = useContext(AuthContext);
     
-    //Handling user registration
     const handleReg = () => {
         const user = {
             name,
@@ -22,73 +18,78 @@ function LogInForm() {
             password
         }
 
-        //Saving the data in a local storage
         localStorage.setItem('user', JSON.stringify(user));
-
         alert("Registration successful, You can now log in");
 
-        //clearing input fields
         setName('');
         setEmail('');
         setPassword('')
     }
 
-    //Retrieving data from localStorage
     const handleLogIn = () => {
         const savedUser = JSON.parse(localStorage.getItem('user'));
 
-        //Checking if the user exists in the storage
         if(
             savedUser.email === email &&
             savedUser.password === password
         ) {
-            //saving the login state
             login(savedUser);
             alert('Login successful!')
-            //Directs to home after successful login
             navigate('/');
-
-
         }else{
             alert('Invalid email or password')
         }
     };
 
   return (
-    <form>
-        <h2>Login to The Liqour Lounge</h2>
-        <div>
+    <div className="login-page">
+      <form className="login-form">
+        <h2 className="login-title">Login to The Liquor Lounge</h2>
+
+        <div className="input-group">
             <input 
-            type="text"
-            placeholder="Enter UserName"
-            onChange={(e)=> setName(e.target.value)}
-            value={name}
-            required/>            
+              type="text"
+              placeholder="Enter Username"
+              onChange={(e)=> setName(e.target.value)}
+              value={name}
+              required
+              className="login-input"
+            />            
         </div>
-        <br />
-        <div>
+
+        <div className="input-group">
             <input 
-            type="email"
-            placeholder="Enter Email" 
-            onChange={(e)=> setEmail(e.target.value)}
-            value={email}
-            required/>  
+              type="email"
+              placeholder="Enter Email" 
+              onChange={(e)=> setEmail(e.target.value)}
+              value={email}
+              required
+              className="login-input"
+            />  
         </div>
-        <br />
-        <div>
+
+        <div className="input-group">
             <input 
-            type="password"
-            placeholder="Enter Password"
-            onChange={(e)=> setPassword(e.target.value)} 
-            value={password}
-            required/>  
+              type="password"
+              placeholder="Enter Password"
+              onChange={(e)=> setPassword(e.target.value)} 
+              value={password}
+              required
+              className="login-input"
+            />  
         </div>
-        <br />
-        <div>
-            <button type="button" onClick={handleLogIn}>Login</button>
-            <button type="button" onClick={handleReg}>Create Account</button>
+
+        <div className="login-buttons">
+            <button type="button" onClick={handleLogIn} className="login-btn">
+              Login
+            </button>
+
+            <button type="button" onClick={handleReg} className="register-btn">
+              Create Account
+            </button>
         </div>
-    </form>
+      </form>
+    </div>
   )
 }
 
