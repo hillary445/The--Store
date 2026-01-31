@@ -13,12 +13,12 @@ import AgeGate from './components/AgeGate'
 function App() {
   const { isLoggedIn } = useContext(AuthContext)
 
-  // 🔍 Search state
+  //Search state
   const [searchQuery, setSearchQuery] = useState("")
 
-  // 🔞 Age verification
+  //Age verification
   const [ageVerified, setAgeVerified] = useState(() => {
-    return localStorage.getItem('ageVerified') === 'true'
+    return sessionStorage.getItem('ageVerified') === 'true'
   })
 
   if (!ageVerified) {
@@ -33,17 +33,12 @@ function App() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
       />
-
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route
-          path='/shop'
-          element={<Shop searchQuery={searchQuery} />}
-        />
+        <Route path='/shop' element={<Shop searchQuery={searchQuery} />}/>
         <Route path='/cart' element={<Cart />} />
         <Route path='/login' element={<LogInForm />} />
       </Routes>
-
       <Footer />
     </>
   )

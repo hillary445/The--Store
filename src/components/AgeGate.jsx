@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './AgeGate.css'
 
 export default function AgeGate({ onVerify }) {
@@ -6,7 +6,7 @@ export default function AgeGate({ onVerify }) {
 
   const handleVerify = (isOldEnough) => {
     if (isOldEnough) {
-      localStorage.setItem('ageVerified', 'true')
+      sessionStorage.setItem('ageVerified', 'true')
       onVerify()
     } else {
       setAttempted(true)
