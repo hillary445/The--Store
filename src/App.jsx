@@ -10,34 +10,43 @@ import { AuthContext } from './context/AuthContext'
 import Footer from './components/Footer'
 import AgeGate from './components/AgeGate'
 
-
 function App() {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext)
 
-   // Age Verification state
+  // 🔍 Search state
+  const [searchQuery, setSearchQuery] = useState("")
+
+  // 🔞 Age verification
   const [ageVerified, setAgeVerified] = useState(() => {
     return localStorage.getItem('ageVerified') === 'true'
   })
 
-    // AgeGate: block app if not verified
   if (!ageVerified) {
     return <AgeGate onVerify={() => setAgeVerified(true)} />
   }
 
-  if (!isLoggedIn) return <LogInForm/>;
+  if (!isLoggedIn) return <LogInForm />
 
   return (
     <>
-    <Navbar/>
-    <Routes>
-      <Route path='/' element= {<Home/>}/>
-      <Route path='/shop' element= {<Shop/>}/>
-      <Route path='/cart' element= {<Cart/>}/>
-      <Route path='/login' element= {<LogInForm/>}/>
-    </Routes>
-    <Footer/>
+      <Navbar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
+
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route
+          path='/shop'
+          element={<Shop searchQuery={searchQuery} />}
+        />
+        <Route path='/cart' element={<Cart />} />
+        <Route path='/login' element={<LogInForm />} />
+      </Routes>
+
+      <Footer />
     </>
-  );
+  )
 }
 
 export default App
