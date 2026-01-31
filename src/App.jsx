@@ -18,7 +18,7 @@ function App() {
 
   //Age verification
   const [ageVerified, setAgeVerified] = useState(() => {
-    return sessionStorage.getItem('ageVerified') === 'true'
+    return localStorage.getItem('ageVerified') === 'true'
   })
 
   if (!ageVerified) {

@@ -6,7 +6,7 @@ export default function AgeGate({ onVerify }) {
 
   const handleVerify = (isOldEnough) => {
     if (isOldEnough) {
-      sessionStorage.setItem('ageVerified', 'true')
+      localStorage.setItem('ageVerified', 'true')
       onVerify()
     } else {
       setAttempted(true)
