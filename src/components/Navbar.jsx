@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
-import { AuthContext } from '../context/AuthContext'
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
-function Navbar({ searchQuery, setSearchQuery }) {
-  const { isLoggedIn, user, logout } = useContext(AuthContext)
+function Navbar({ searchQuery, setSearchQuery, cartCount }) {
+  const { isLoggedIn, user, logout } = useContext(AuthContext);
 
   return (
     <nav className="navbar">
@@ -14,7 +14,14 @@ function Navbar({ searchQuery, setSearchQuery }) {
       <div className="navbar-links">
         <Link to="/" className="nav-link">Home</Link>
         <Link to="/shop" className="nav-link">Shop</Link>
-        <Link to="/cart" className="nav-link">Cart</Link>
+
+        {/* Cart with count */}
+        <Link to="/cart" className="nav-link">
+          Cart
+          {cartCount > 0 && (
+            <span className="cart-badge">{cartCount}</span>
+          )}
+        </Link>
       </div>
 
       <div className="navbar-actions">
@@ -33,8 +40,7 @@ function Navbar({ searchQuery, setSearchQuery }) {
         )}
       </div>
     </nav>
-  )
+  );
 }
 
-export default Navbar
-
+export default Navbar;
