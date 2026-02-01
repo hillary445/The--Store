@@ -1,83 +1,384 @@
+/* ==========================================================================
+   1. VARIABLES & THEME SETUP
+   ========================================================================== */
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  /* Font & Typography */
+  --font-family-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --line-height-base: 1.5;
+  --line-height-heading: 1.1;
+  --font-size-base: 16px; /* Explicitly set base font size */
+  --font-size-h1: 3.2em;
 
+  /* Colors (Dark Mode Default) */
+  --color-text: rgba(255, 255, 255, 0.87);
+  --color-background: #242424;
+  --color-primary: #646cff;
+  --color-primary-hover: #535bf2;
+  --color-surface: #1a1a1a;
+  --color-surface-light: #f9f9f9;
+  --color-danger: hsl(0, 84%, 60%);
+  --color-light-text: #213547;
+  --color-light-background: #ffffff;
+  --color-light-primary-hover: #747bff;
+
+  /* Sizing & Spacing */
+  --border-radius-medium: 8px;
+  --padding-button: 0.6em 1.2em;
+  --container-max-width: 800px;
+  --container-padding: 2rem;
+
+  /* Transitions & Effects */
+  --transition-duration: 0.25s;
+  --focus-outline-color: -webkit-focus-ring-color;
+
+  /* Set color scheme for browser UI */
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+}
 
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-text: var(--color-light-text);
+    --color-background: var(--color-light-background);
+    --color-primary-hover: var(--color-light-primary-hover);
+    --color-surface: var(--color-surface-light);
+  }
+}
+
+
+/* ==========================================================================
+   2. GLOBAL RESET & BASE STYLES
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--font-size-base);
+}
+
+body {
+  min-height: 100vh; /* Use dvh for mobile browsers if dynamic toolbars are an issue */
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
+  background-color: var(--color-background);
+
+  /* Font rendering optimizations */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+/* ==========================================================================
+   3. TYPOGRAPHY & LINKS
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: var(--line-height-heading);
+  font-weight: var(--font-weight-bold);
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: var(--font-size-h1);
 }
+
+a {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+  text-decoration: none; /* More explicit than inherit for links */
+  transition: color var(--transition-duration) ease;
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline; /* Common UX pattern to add underline on hover */
+}
+
+
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  font-size: 1em;
+  font-weight: var(--font-weight-medium);
+  padding: var(--padding-button);
+  border-radius: var(--border-radius-medium);
+  border: 1px solid transparent;
+  background-color: var(--color-surface);
+  color: var(--color-text);
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: border-color var(--transition-duration) ease, background-color var(--transition-duration) ease;
 }
+
 button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  border-color: var(--color-primary);
 }
 
-@media (prefers-color-scheme: light) {
+button:active {
+  transform: scale(0.98); /* Adds a "press" effect *//* ==========================================================================
+   1. ARCHITECTURE: CASCADE LAYERS
+   Defines a structured order for CSS rules, preventing specificity wars.
+   ========================================================================== */
+
+@layer reset, base, layout, components, utilities;
+
+@layer reset {
+  /* A more robust modern reset */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font: inherit; /* Inherit font properties by default */
+  }
+
+  img, picture, svg, video {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+@layer base {
+  /* ==========================================================================
+     2. DESIGN TOKENS & THEME SETUP (using modern functions)
+     ========================================================================== */
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    /* Fluid Typography using clamp() */
+    --font-size-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); /* Scales from 16px to 18px */
+    --font-size-h1: clamp(2.5rem, 1.5rem + 5vw, 4.5rem);
+
+    /* Fluid Spacing */
+    --space-m: clamp(1rem, 0.5rem + 2.5vw, 2rem);
+
+    /* Font & Typography */
+    --font-family-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+    --line-height-base: 1.6;
+    --line-height-heading: 1.1;
+
+    /* Colors (Dark Mode Default) */
+    --color-text-rgb: 255, 255, 255;
+    --color-background-rgb: 36, 36, 36;
+    --color-primary-rgb: 100, 108, 255;
+    --color-surface-rgb: 26, 26, 26;
+    --color-danger-rgb: 220, 38, 38;
+
+    /* Sizing & Effects */
+    --border-radius-medium: 0.75rem;
+    --transition-duration: 0.2s;
+
+    color-scheme: light dark;
   }
-  a:hover {
-    color: #747bff;
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --color-text-rgb: 33, 53, 71;
+      --color-background-rgb: 255, 255, 255;
+      --color-surface-rgb: 249, 249, 249;
+    }
   }
-  button {
-    background-color: #f9f9f9;
+
+  /* Base Body & Document Styles */
+  html {
+    font-size: var(--font-size-base);
+  }
+
+  body {
+    min-height: 100dvh; /* Use dynamic viewport height for mobile */
+    font-family: var(--font-family-sans);
+    line-height: var(--line-height-base);
+    color: rgb(var(--color-text-rgb) / 0.9);
+    background-color: rgb(var(--color-background-rgb));
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Typography & Links using CSS Nesting */
+  h1, h2, h3, h4, h5, h6 {
+    line-height: var(--line-height-heading);
+    font-weight: var(--font-weight-bold);
+    text-wrap: balance; /* Prevents typographic widows */
+  }
+
+  h1 {
+    font-size: var(--font-size-h1);
+  }
+
+  a {
+    font-weight: var(--font-weight-medium);
+    color: rgb(var(--color-primary-rgb));
+    text-decoration: none;
+    transition: color var(--transition-duration) ease;
+
+    &:hover {
+      color: color-mix(in srgb, rgb(var(--color-primary-rgb)), #fff 20%);
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+    }
   }
 }
 
-.cart-badge {
-  background: red;
-  color: white;
-  font-size: 12px;
-  padding: 2px 6px;
-  border-radius: 50%;
-  margin-left: 6px;
+@layer layout {
+  /* ==========================================================================
+     3. LAYOUT
+     ========================================================================== */
+  .container {
+    width: min(100% - var(--space-m) * 2, 800px);
+    margin-inline: auto;
+  }
+
+  .centered-layout {
+    display: grid;
+    place-items: center;
+    min-height: 100dvh;
+  }
 }
+
+@layer components {
+  /* ==========================================================================
+     4. COMPONENTS (with Nesting and Container Queries)
+     ========================================================================== */
+
+  /* --- Button Component --- */
+  .button {
+    display: inline-block;
+    padding: 0.75em 1.5em;
+    font-weight: var(--font-weight-medium);
+    text-align: center;
+    border-radius: var(--border-radius-medium);
+    border: 1px solid transparent;
+    background-color: rgb(var(--color-surface-rgb));
+    color: rgb(var(--color-text-rgb));
+    cursor: pointer;
+    transition: transform var(--transition-duration) ease,
+                background-color var(--transition-duration) ease,
+                border-color var(--transition-duration) ease;
+
+    &:hover {
+      border-color: rgb(var(--color-primary-rgb));
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+
+    &:focus-visible {
+      outline: 3px solid rgb(var(--color-primary-rgb));
+      outline-offset: 3px;
+    }
+  }
+
+  /* --- Cart Button & Badge --- */
+  .cart-button {
+    position: relative;
+
+    & .cart-badge {
+      position: absolute;
+      top: -0.5rem;
+      right: -0.5rem;
+      display: grid;
+      place-items: center;
+      min-width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: rgb(var(--color-danger-rgb));
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: var(--font-weight-bold);
+    }
+  }
+
+  /* --- Example Card Component for Container Queries --- */
+  .card {
+    container-type: inline-size; /* Makes this element a query container */
+    background: rgb(var(--color-surface-rgb));
+    border-radius: var(--border-radius-medium);
+    padding: var(--space-m);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+  }
+
+  /* Style the card's content based on the card's width */
+  @container (width > 400px) {
+    .card {
+      display: flex;
+      align-items: center;
+      gap: var(--space-m);
+    }
+  }
+}
+
+@layer utilities {
+  /* ==========================================================================
+     5. UTILITIES
+     ========================================================================== */
+  .visually-hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
+  }
+}
+}
+
+button:focus-visible {
+  outline: 4px auto var(--focus-outline-color);
+  outline-offset: 2px;
+}
+
+
+
+.centered-layout {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: var(--container-max-width);
+  margin-inline: auto; /* Logical property for left/right margin */
+  padding-inline: var(--container-padding); /* Logical property for left/right padding */
+}
+
 .cart-button {
   position: relative;
 }
+
+.cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 2px;
+  border-radius: 50%;
+  background: var(--color-danger);
+  color: white;
+  font-size: 12px;
+  font-weight: var(--font-weight-bold);
+}
+ */
 
 .visually-hidden {
   border: 0;
@@ -88,10 +389,23 @@ button:focus-visible {
   padding: 0;
   position: absolute;
   width: 1px;
+  white-space: nowrap; /* Added for robustness */
 }
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+.button-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.age-btn:hover {
+  background-color: #535bf2;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+};
+
+.age-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
