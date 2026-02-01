@@ -7,7 +7,7 @@ export default function Shop({ searchQuery }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3000/products')
+    fetch('https://my-json-server.typicode.com/hillary445/The--Store/products')
       .then((response) => response.json())
       .then((data) => {
         setProducts(data);
