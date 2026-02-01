@@ -19,9 +19,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("")
 
   //Age verification
-  const [ageVerified, setAgeVerified] = useState(() => {
-    return localStorage.getItem('ageVerified') === 'true'
-  })
+    const [ageVerified, setAgeVerified] = useState(false);
 
   if (!ageVerified) {
     return <AgeGate onVerify={() => setAgeVerified(true)} />
