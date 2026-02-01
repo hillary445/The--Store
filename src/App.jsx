@@ -7,6 +7,8 @@ import Shop from './pages/Shop'
 import Cart from './pages/Cart'
 import LogInForm from './pages/LogInForm'
 import { AuthContext } from './context/AuthContext'
+// 1. Import CartProvider
+import { CartProvider } from './context/CartContext' 
 import Footer from './components/Footer'
 import AgeGate from './components/AgeGate'
 
@@ -28,7 +30,8 @@ function App() {
   if (!isLoggedIn) return <LogInForm />
 
   return (
-    <>
+    // 2. Wrap the components that need access to the Cart (Shop and Cart)
+    <CartProvider>
       <Navbar
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -40,7 +43,7 @@ function App() {
         <Route path='/login' element={<LogInForm />} />
       </Routes>
       <Footer />
-    </>
+    </CartProvider>
   )
 }
 
