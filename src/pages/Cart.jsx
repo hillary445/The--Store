@@ -1,14 +1,19 @@
-function Cart({ orders, updateQuantity, removeFromCart }) {
-  if (!orders || orders.length === 0) {
+import { useCart } from "../context/CartContext";
+
+
+function Cart() {
+  const { cartItems, updateQuantity, removeFromCart, cartTotal } = useCart();
+
+  if (cartItems.length === 0) {
     return <p>Your cart is empty.</p>;
   }
 
-  const totalItems = orders.reduce(
+  const totalItems = cartItems.reduce(
     (sum, item) => sum + item.quantity,
     0
   );
 
-  const totalPrice = orders.reduce(
+  const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
@@ -19,7 +24,7 @@ function Cart({ orders, updateQuantity, removeFromCart }) {
       <p><strong>Total Items:</strong> {totalItems}</p>
 
       <ul className="cart-list">
-        {orders.map((item) => (
+        {cartItems.map((item) => (
           <li key={item.id} className="cart-item">
             <div>
               <strong>{item.name}</strong>
@@ -61,7 +66,7 @@ function Cart({ orders, updateQuantity, removeFromCart }) {
         ))}
       </ul>
 
-      <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
+      <h3>Total Price: ${cartTotal.toFixed(2)}</h3>
     </div>
   );
 }
